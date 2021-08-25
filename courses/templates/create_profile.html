@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+<!-- start of block content -->
+{% block content %}
+<div class="row-center-static container-xl">
+  <div class="column-start-static width-50 white-background white-border">
+    <p class="primary-text text-center width-100 subheading-bold">
+      Create your Profile
+    </p>
+
+    <div class="row-spaced-static width-100 margin-auto">
+      <div class="column-start-static width-100">
+        <form
+          action="/profile/create/"
+          method="POST"
+          enctype="multipart/form-data"
+          class="block-form width-100"
+        >
+          {% csrf_token %}
+          <label for="email" class="width-70 text-start container-xxs"
+            >First Name</label
+          >
+          <input
+            type="text"
+            class="width-60 text-start container-xs"
+            name="first_name"
+            id="first_name"
+            placeholder="Enter first name here..."
+          />
+          <label for="email" class="width-70 text-start container-xxs"
+            >Last Name</label
+          >
+          <input
+            type="text"
+            class="width-60 text-start container-xs"
+            placeholder="Enter last name here..."
+            name="last_name"
+            id="last_name"
+          />
+          <label for="new_avatar" class="width-70 text-start container-xxs"
+            >Profile Picture</label
+          >
+          <input
+            type="file"
+            class="width-60 text-start container-xs"
+            accept="images/*"
+            name="new_avatar"
+            id="new_avatar"
+          />
+
+          <div class="width-60 row-end-static">
+            <button
+              class="
+                primary-button
+                margin-xs
+                container-xxs
+                primary-border
+                white-text
+                width-100
+                body-sm-bold
+              "
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

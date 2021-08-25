@@ -1,0 +1,106 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title>Video Instructor</title>
+    {% endif %}
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/utilities.css' %}" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+  </head>
+  <body class="light-background">
+    <div class="main-container">
+      <div
+        id="navbar"
+        class="white-background row-flexible-spaced width-100 height-100"
+      >
+        <div class="row-spaced-static w-100">
+          <div class="w-100 container-sm">
+            <img
+              src="{% static 'images/nav-logo.png' %}"
+              alt=""
+              id="nav-logo"
+            />
+          </div>
+
+          <form action="/" class="container-sm width-20 inline-form">
+            <input
+              type="text"
+              placeholder="Search course titles"
+              class="width-100"
+            />
+          </form>
+        </div>
+      </div>
+      <div
+        id="sidebar"
+        class="
+          white-background
+          column-start-static
+          text-center
+          container-xxs
+          height-100
+        "
+      >
+        <div class="row-spaced-static w-100">
+          <div class="w-100 container-sm">
+            <img
+              src="{% static 'images/nav-logo.png' %}"
+              alt=""
+              id="nav-logo"
+            />
+          </div>
+        </div>
+
+        <a href="/" class="sidebar-items width-50">
+          <img src="{% static 'icons/home.svg'%}" width="30px" />
+          <p class="body-sm-bold primary-text text-start">Dashboard</p>
+        </a>
+        <a href="/courses/registered" class="sidebar-items width-50">
+          <img src="{% static 'icons/registered.svg'%}" width="30px" />
+          <p class="body-sm-bold primary-text text-start">
+            Registered <br />
+            Courses
+          </p>
+        </a>
+        <a href="/courses/browse" class="sidebar-items width-50">
+          <img src="{% static 'icons/courses.svg'%}" width="30px" />
+          <p class="body-sm-bold primary-text text-start">
+            Browse <br />
+            Courses
+          </p>
+        </a>
+        <a href="/profile/edit" class="sidebar-items width-50">
+          <img src="{% static 'icons/profile.svg'%}" width="30px" />
+          <p class="body-sm-bold primary-text text-start">
+            Edit <br />
+            Profile
+          </p>
+        </a>
+        <a href="/logout" class="sidebar-items width-50">
+          <img src="{% static 'icons/log-out.svg' %}" width="30px" />
+          <p class="body-sm-bold primary-text text-start">Log out</p>
+        </a>
+      </div>
+      <div id="content" class="height-100 width-100">
+        {% block content %} {% endblock content %}
+      </div>
+    </div>
+  </body>
+
+  {% block scripts %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+  {% endblock scripts %}
+</html>

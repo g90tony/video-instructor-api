@@ -1,0 +1,137 @@
+:root {
+  --primary: #0081a7;
+  --secondary: #00afb9;
+  --light: #f2f2f2;
+  --white: #ffffff;
+}
+
+.primary-text {
+  color: var(--primary);
+}
+.secondary-text {
+  color: var(--secondary);
+}
+.light-text {
+  color: var(--light);
+}
+.white-text {
+  color: var(--white);
+}
+
+.primary-background {
+  background-color: var(--primary);
+}
+.secondary-background {
+  background-color: var(--secondary);
+}
+.light-background {
+  background-color: var(--light);
+}
+.white-background {
+  background-color: var(--white);
+}
+
+.primary-border {
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+}
+.secondary-border {
+  border: 1px solid var(--secondary);
+  border-radius: 10px;
+}
+.light-border {
+  border: 1px solid var(--light);
+  border-radius: 10px;
+}
+.white-border {
+  border: 1px solid var(--white);
+  border-radius: 10px;
+}
+
+.primary-link {
+  color: var(--primary);
+  text-decoration: none;
+}
+.primary-link:hover {
+  transition: 400ms ease-in;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.secondary-link {
+  color: var(--secondary);
+  text-decoration: none;
+}
+.secondary-link:hover {
+  transition: 400ms ease-in;
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.light-link {
+  color: var(--light);
+  text-decoration: none;
+}
+.light-link:hover {
+  transition: 400ms ease-in;
+  color: var(--light);
+  text-decoration: none;
+}
+
+.white-link {
+  color: var(--white);
+  text-decoration: none;
+}
+.white-link:hover {
+  transition: 400ms ease-in;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.primary-button {
+  background-color: var(--primary);
+  color: var(--white);
+  text-decoration: none;
+}
+.primary-button:hover {
+  transition: 400ms ease-in;
+  background-color: var(--white);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.secondary-button {
+  background-color: var(--secondary);
+  color: var(--white);
+  text-decoration: none;
+}
+.secondary-button:hover {
+  transition: 400ms ease-in;
+  background-color: var(--white);
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.light-button {
+  background-color: var(--light);
+  color: var(--primary);
+  text-decoration: none;
+}
+.light-button:hover {
+  transition: 400ms ease-in;
+  background-color: var(--primary);
+  color: var(--light);
+  text-decoration: none;
+}
+
+.white-button {
+  background-color: var(--white);
+  color: var(--primary);
+  text-decoration: none;
+}
+.white-button:hover {
+  transition: 400ms ease-in;
+  background-color: var(--primary);
+  color: var(--white);
+  text-decoration: none;
+}

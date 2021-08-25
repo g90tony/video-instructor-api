@@ -1,0 +1,147 @@
+{% extends 'base.html' %} {% load static %}
+<!-- start of block content -->
+{% block content %}
+
+<div
+  class="row-center-flexible white-border white-background height-80 margin-sm"
+>
+  <div class="width-70 height-100 column-start-flexible margin-none">
+    <iframe
+      id="player"
+      title="YouTube video player"
+      frameborder="0"
+      src="{{current_lesson.lesson}}?autoplay=0&rel=0&enablejsapi=1 "
+      allow="accelerometer; picture-in-picture"
+      allowfullscreen
+      class="margin-none width-100 height-100 white-border"
+    ></iframe>
+
+    <input type="hidden" id="next_request" value="{{next_lesson}}" />
+    <input type="hidden" id="last_request" value="{{last_lesson}}" />
+    <input type="hidden" id="lesson_id" value="{{current_lesson.id}}" />
+    <input type="hidden" id="course_id" value="{{current_lesson.course.id}}" />
+  </div>
+
+  <div class="width-30 column-start-static height-100">
+    <div class="row-start-static width-100">
+      <p class="body-md-bold primary-text container-xs margin-none">
+        Course Lessons
+      </p>
+    </div>
+    <div class="column-start-static width-100" style="overflow-y: auto">
+      {% for item in lessons %}
+      <div
+        class="
+          row-start-static
+          light-background
+          white-border
+          width-80
+          container-xxs
+        "
+      >
+        <div class="column-start-static width-20 margin-x-sm">
+          {% if item.id == current_lesson.id %}
+          <a
+            href="/courses/registered/view/{{item.course.id}}/lesson/{{item.id}}"
+            class="loader"
+          >
+            <img
+              class="border-circle light-background container-xs margin-auto"
+              src="{% static 'icons/check.svg' %}"
+              alt=""
+            />
+          </a>
+        </div>
+        <div
+          class="
+            column-end-static
+            white-background
+            circular-border
+            width-90
+            height-80
+          "
+        >
+          <p
+            class="
+              body-sm-bold
+              row-start-static
+              primary-text
+              width-100
+              height-100
+              margin-none
+              light-background
+            "
+          >
+            current
+          </p>
+          {% else %}
+          <a
+            href="/courses/registered/view/{{item.course.id}}/lesson/{{item.id}}"
+            class="loader"
+          >
+            <img
+              class="border-circle light-background container-xs margin-auto"
+              src="{% static 'icons/play.svg' %}"
+              alt=""
+            />
+          </a>
+        </div>
+        <div
+          class="
+            column-end-static
+            white-background
+            circular-border
+            width-90
+            height-80
+          "
+        >
+          <p
+            class="
+              body-sm-bold
+              row-start-static
+              primary-text
+              width-100
+              height-100
+              margin-none
+              light-background
+            "
+          >
+            {{item.title}}
+          </p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block scripts %} {{block.super}}
+
+<script type="text/javascript">
+  lesson_id = document.getElementById("lesson_id").value;
+  course_id = document.getElementById("course_id").value;
+  last_lesson_id = document.getElementById("last_request").value;
+  next_lesson_id = document.getElementById("next_request").value;
+
+  var tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+
+  var firstScript = document.getElementsByTagName("script")[0];
+  firstScript.parentNode.insertBefore(tag, firstScript);
+  function onYouTubeIframeAPIReady() {
+    new YT.Player("player", {
+      events: {
+        onStateChange: function (evt) {
+          if (evt.data === YT.PlayerState.ENDED) {
+            if (next_lesson_id)
+              window.location.href = `/courses/registered/view/${course_id}/lesson/${lesson_id}/complete/${next_lesson_id}`;
+            else {
+              window.location.href = `/courses/registered`;
+            }
+          }
+        },
+      },
+    });
+  }
+</script>
+{% endblock scripts %}

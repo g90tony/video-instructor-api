@@ -1,0 +1,50 @@
+{% extends "django_registration/base.html" %}
+
+<!-- load bootstrap -->
+{% load bootstrap4 %} {% block content %}
+
+<div
+  class="
+    width-50
+    column-center-static
+    white-background
+    container-md
+    margin-xl
+    height-100
+    white-border
+  "
+>
+  {% if form.errors %}
+  <p>Password or Username is incorrect</p>
+  {% endif %}
+  <p class="primary-text subheading-bold width-100 text-center">
+    Welcome to Video Instructor
+  </p>
+  <p class="body-md-bold w-100 text-center">Login to continue:</p>
+  <form
+    class="
+      form-block
+      column-center-flexible
+      white-background white-border
+      width-80
+      height-100
+      margin-auto
+    "
+    action="/accounts/login/"
+    method="post"
+  >
+    {% csrf_token %} {% bootstrap_form form %}
+    <input type="submit" class="primary-button body-sm-bold" value="Login" />
+    <p class="mx-auto body-sm-regular">
+      If you don't have an account,
+      <span
+        ><a class="secondary-text body-sm-bold" href="/accounts/register/"
+          >click here.</a
+        ></span
+      >
+    </p>
+  </form>
+  <input type="hidden" name="next" value="{{next}}" />
+</div>
+
+{% endblock content %}

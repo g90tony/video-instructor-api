@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+<!-- start of block content -->
+{% block content %}
+<div class="margin-y-xs container-x-auto width-100 height-auto">
+  <div
+    class="
+      row-spaced-static
+      width-80
+      white-background white-border
+      container-x-sm
+      margin-x-auto
+    "
+  >
+    <p class="body-lg-bold primary-text width-auto">Browse Courses</p>
+
+    <form
+      action="/courses/browse/search"
+      method="POST"
+      class="inline-form width-auto"
+    >
+      <input
+        type="text"
+        name="search_query"
+        id="search_query"
+        placeholder="Search all courses..."
+      />
+    </form>
+  </div>
+</div>
+
+<div class="row-start-flexible width-80 margin-x-auto height-auto">
+  {% if courses %} {% for course in courses %}
+  <div
+    class="
+      course-card
+      column-start-static
+      light-border
+      white-background
+      margin-xxs
+    "
+  >
+    <div class="row-start-static">
+      <img src="{{course.thumbnail.url}}" alt="" />
+    </div>
+    <div class="course-text width-80 column-center-static">
+      <div class="row-start-static margin-none width-100">
+        <p class="body-md-bold primary-text margin-y-xxs width-100">
+          {{course.name}}
+        </p>
+      </div>
+      <div class="row-start-static margin-none width-100">
+        <p class="body-sm-bold secondary-text margin-y-xxs width-100">
+          {{course.category}}
+        </p>
+      </div>
+      <div class="row-start-static margin-none width-100">
+        <p class="body-sm-bold margin-y-xxs width-100">
+          {{course.created | date:'Y'}}
+        </p>
+      </div>
+
+      <div class="row-end-static width-100">
+        <a
+          href="/courses/browse/view/{{course.id}}"
+          class="
+            secondary-button secondary-border
+            body-sm-bold
+            container-xxs
+            width-30
+            text-center
+          "
+        >
+          View
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+  <!-- start of else block -->
+  {% else %}
+  <div class="row-static-center w-100">
+    <p class="secondary-text-text-center body-md-bold width-100">
+      There are no courses uploaded
+    </p>
+  </div>
+
+  {% endif %}
+</div>
+
+{% endblock content %}

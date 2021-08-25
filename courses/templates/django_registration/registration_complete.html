@@ -1,0 +1,8 @@
+{% extends 'django_registration/base.html' %} {% block scripts %}
+{{block.super}}
+<script>
+  $(document).ready(() => {
+    window.location = "/accounts/login";
+  });
+</script>
+{% endblock scripts %}

@@ -1,0 +1,72 @@
+{% load bootstrap4 %}
+<!-- imported static -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title>Project Glimpse</title>
+    {% endif %} {% block styles %}
+
+    <!-- django bootstrap -->
+    {% bootstrap_css %}
+    <link
+      rel="stylesheet"
+      href="{% static 'css/colors.css' %}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/components.css' %}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/index.css' %}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/layout.css' %}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/typography.css' %}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/utilities.css' %}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <!-- end of style block -->
+    {% endblock styles %}
+  </head>
+  <body
+    class="light-background height-100 width-90 row-center-flexible margin-xl"
+  >
+    <!-- start of content block -->
+    {% block content %} {% endblock content %}
+
+    <!-- start of scripts block -->
+    {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {{bootstrap_javascript}}
+
+    <!-- end of content block -->
+    {% endblock scripts %}
+  </body>
+</html>

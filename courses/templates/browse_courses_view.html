@@ -1,0 +1,132 @@
+{% extends 'base.html' %} {% load static %}
+<!-- start of block content -->
+{% block content %}
+<div
+  class="
+    column-spaced-flexible
+    white-background
+    container-sm
+    white-border
+    margin-auto
+    width-80
+  "
+>
+  <div class="row-start-static w-100 text-start container-sm">
+    <a
+      href="/courses/browse"
+      class="
+        secondary-link
+        body-md-bold
+        width-100
+        text-start
+        margin-y-auto
+        height-100
+        row-start-static
+      "
+    >
+      <img src="{% static 'icons/back.svg' %}" class="height-100" />
+      Back
+    </a>
+  </div>
+  <div class="row-start-flexible">
+    <div class="column-center-static">
+      <img
+        src="{{course.thumbnail.url}}"
+        class="white-border course-view-img margin-x-auto"
+      />
+    </div>
+    <div class="column-start-flexible width-auto container-sm">
+      <div class="row-start-static width-100 margin-none">
+        <p class="primary-text body-lg-bold">{{course.name}}</p>
+      </div>
+      <div class="row-start-static width-100 margin-none">
+        <p class="secondary-text body-md-bold margin-none">
+          {{course.category.name}}
+        </p>
+      </div>
+      <div class="row-start-flexible width-100 height-80">
+        <p class="body-sm-regular width-100">{{course.description}}</p>
+      </div>
+      <div class="row-end-static width-100">
+        <a
+          href="/courses/registered/register/{{course.id}}"
+          class="
+            secondary-button
+            container-xs
+            secondary-border
+            body-sm-bold
+            white-text
+          "
+          >Enroll Course</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row-start-static width-100 container-sm">
+  <p class="primary-text body-xl-bold">Similar Courses</p>
+</div>
+
+<div
+  class="row-start-static width-80 margin-x-auto"
+  style="margin-bottom: 100px"
+>
+  {% if similar %} {% for item in similar %}
+  <div
+    class="
+      course-card
+      column-start-static
+      light-border
+      white-background
+      margin-xxs
+    "
+  >
+    <div class="row-start-static">
+      <img src="{{course.thumbnail.url}}" alt="" />
+    </div>
+    <div class="course-text width-80 column-center-static">
+      <div class="row-start-static margin-none width-100">
+        <p class="body-lg-bold primary-text margin-y-xxs width-100">
+          {{course.name}}
+        </p>
+      </div>
+      <div class="row-start-static margin-none width-100">
+        <p class="body-md-bold secondary-text margin-none width-100">
+          Progress
+        </p>
+      </div>
+      <div class="row-start-static width-100">
+        <p
+          class="body-sm-regular margin-none width-100 height-auto margin-y-xxs"
+        >
+          200/=
+        </p>
+      </div>
+      <div class="row-end-static width-100">
+        <a
+          href="/courses/browse/view/{{course.id}}"
+          class="
+            secondary-button secondary-border
+            body-sm-bold
+            container-xs
+            width-30
+            text-center
+          "
+        >
+          View
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %} {% else %}
+  <div class="row-static-center w-100">
+    <p class="secondary-text-text-center body-md-bold width-100">
+      There are no similar courses available
+    </p>
+  </div>
+
+  {% endif %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+<!-- start of block content -->
+{% block content %}
+<div class="margin-y-xs container-x-auto width-100 height-auto">
+  <div
+    class="
+      row-spaced-static
+      width-80
+      white-background white-border
+      container-x-sm
+      margin-x-auto
+    "
+  >
+    <p class="body-lg-bold primary-text width-100">Your Courses</p>
+
+    <form
+      action="/courses/registered/search"
+      method="POST"
+      class="inline-form width-auto"
+    >
+      <input
+        type="text"
+        name="search_query"
+        id="search_query"
+        placeholder="Search registered courses..."
+      />
+    </form>
+  </div>
+</div>
+
+{% if registered %} {% for item in registered %}
+<div class="row-start-flexible width-80 margin-x-auto height-auto">
+  <div class="registered-card-lg height-100 white-background white-border">
+    <div class="row-center-static width-100 margin-none">
+      <img src="{{item.course.thumbnail.url}}" alt="" />
+    </div>
+    <div class="registered-text-md width-100 container-x-xs margin-y-xs">
+      <div class="row-start-static width-auto margin-none">
+        <p class="primary-text margin-x-xs margin-y-xxs body-md-bold">
+          {{item.course.name}}
+        </p>
+      </div>
+      <div class="row-spaced-flexible width-auto">
+        <p class="secondary-text width-30 margin-xs body-sm-bold">
+          {{item.course.category}}
+        </p>
+        <p class="width-30 margin-xs body-sm-bold">
+          {{item.course.created | date:'M Y'}}
+        </p>
+      </div>
+      <div class="row-spaced-flexible width-auto">
+        <p class="width-30 margin-xs body-sm-bold">Progress</p>
+        <progress
+          id="file"
+          max="100"
+          value="{{item.progress}}"
+          class="margin-x-auto width-50 container-xxs"
+        ></progress>
+      </div>
+
+      <div class="row-end-static width-80 margin-x-auto container-y-xs">
+        <a
+          href="/courses/registered/view/{{item.id}}"
+          class="
+            secondary-button
+            width-30
+            body-sm-bold
+            margin-0
+            text-center
+            secondary-border
+            container-xxs
+          "
+        >
+          View
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %} {% else %}
+  <div class="row-start-flexible width-80 margin-x-auto height-auto">
+    <div class="row-static-center w-100">
+      <p class="secondary-text-text-center body-md-bold width-100">
+        You have not registered for any course
+      </p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}
