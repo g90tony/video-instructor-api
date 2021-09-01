@@ -616,16 +616,27 @@ class CurrentProgress(APIView):
     def get_progress_instance(self, course_pk, profile_pk):
 
         tracked_lesson = dict()
+        course_lesson = dict()
 
         progress_instance = Progress.objects.filter(
             profile=profile_pk, course=course_pk, is_complete=False).first()
 
-        course_lesson = Lesson.objects.filter(
-            id=progress_instance.lesson).first()
+        if progress_instance != None:
+            course_lesson = Lesson.objects.filter(
+                id=progress_instance.lesson).first()
+        else:
+            progress_instances = Progress.objects.filter(
+                profile=profile_pk, course=course_pk).all()
+
+            for index, item in progress_instances:
+                if item['lesson'] == lesson_id:
+                    lesson_id = progress_instances[index + 1].lesson
+                    course_lesson = Lesson.objects.filter(id=lesson_id).first()
 
         if course_lesson:
             tracked_lesson['title'] = course_lesson.title
             tracked_lesson['descripion'] = course_lesson.descripion
+            tracked_lesson['lesson_id'] = course_lesson.id
             tracked_lesson['lesson'] = course_lesson.lesson
             tracked_lesson['course'] = course_lesson.course.id
 
@@ -641,31 +652,76 @@ class CurrentProgress(APIView):
 
 class CompleteCourseLesson(APIView):
 
-    def get_progress_instance(course_id, profile_id, lesson_id):
-        course_instance = Course.objects.filter(id=course_id).first()
-
-        profile_instance = Profile.objects.filter(id=profile_id).first()
-
-        lesson_instance = Lesson.objects.filter(id=lesson_id).first()
+    def get_progress_instance(self, course_id, profile_id, lesson_id):
 
         progress_instance = Progress.objects.filter(
-            course=course_instance, profile=profile_instance, lesson=lesson_instance).first()
+            course=course_id, profile=profile_id, lesson=lesson_id).first()
 
         return progress_instance
+
+    def get_next_lesson(self, course_id, profile_id, lesson_id):
+
+        tracked_lesson = dict()
+        course_lesson = dict()
+
+        progress_instance = Progress.objects.filter(
+            profile=profile_id, course=course_id, is_complete=False).first()
+        if progress_instance != None:
+            course_lesson = Lesson.objects.filter(
+                id=progress_instance.lesson).first()
+        else:
+            progress_instances = Progress.objects.filter(
+                profile=profile_id, course=course_id).all()
+
+            for index, item in progress_instances:
+                if item['lesson'] == lesson_id:
+                    lesson_id = progress_instances[index + 1].lesson
+                    course_lesson = Lesson.objects.filter(id=lesson_id).first()
+
+        if course_lesson:
+            tracked_lesson['title'] = course_lesson.title
+            tracked_lesson['descripion'] = course_lesson.descripion
+            tracked_lesson['lesson_id'] = course_lesson.id
+            tracked_lesson['lesson'] = course_lesson.lesson
+            tracked_lesson['course'] = course_lesson.course.id
+            tracked_lesson['is_complete'] = progress_instance.is_complete
+        return tracked_lesson
+
+    def update_course_progress(self, course_id, profile_id):
+        registered_course_instance = RegisteredCourses.objects.filter(
+            profile=profile_id, course=course_id).first()
+
+        registered_course_lessons = Progress.objects.filter(
+            course=course_id, profile=profile_id).all()
+
+        progress_counter = 0
+        lesson_counter = 0
+
+        for item in registered_course_lessons:
+            lesson_counter = lesson_counter + 1
+            if item.is_complete == True:
+                progress_counter = progress_counter + 1
+
+        new_progress = progress_counter/lesson_counter * 100
+
+        registered_course_instance.progress = new_progress
+
+        registered_course_instance.progress = progress_counter
+        registered_course_instance.save()
 
     def post(self, request, course_id, profile_id, lesson_id, format=None):
 
         current_progress_instance = self.get_progress_instance(
             course_id, profile_id, lesson_id)
 
-        serializer = ProgressSerializer(current_progress_instance, context={
-            'request': request}, many=False)
+        current_progress_instance.is_complete = True
+        current_progress_instance.save()
 
-        if serializer.is_valid():
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        self.update_course_progress(course_id, profile_id)
 
-        else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        next_lesson = self.get_next_lesson(course_id, profile_id)
+
+        return Response(data=next_lesson, status=status.HTTP_200_OK)
 
 
 class UploadView(APIView):
