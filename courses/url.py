@@ -29,7 +29,6 @@ urlpatterns = [
     path('courses/browse/recent',
          API_ROUTES.RecentCourses.as_view()),
 
-    path('courses/registered/', API_ROUTES.ListCourses.as_view()),
     path('courses/registered/enroll/',
          API_ROUTES.EnrollCourse.as_view()),
     path('courses/registered/search/',
