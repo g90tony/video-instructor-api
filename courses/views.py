@@ -639,7 +639,7 @@ class CurrentProgress(APIView):
         return Response(data=current_progress_instance, status=status.HTTP_200_OK)
 
 
-class completeCourseLesson(APIView):
+class CompleteCourseLesson(APIView):
 
     def get_progress_instance(course_id, profile_id, lesson_id):
         course_instance = Course.objects.filter(id=course_id).first()
