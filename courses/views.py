@@ -281,6 +281,26 @@ class ListRegisterCourse(APIView):
         except Profile.DoesNotExist:
             raise response.Http404
 
+    def get_course_progress(self, profile_id, course_id):
+        lesson_counter = 0
+        completes_lessons = 0
+
+        course_lessons = Progress.objects.filter(
+            profile=profile_id, course=course_id).all()
+
+        for item in course_lessons:
+            if item.is_complete:
+                completes_lessons = completes_lessons + 1
+
+            lesson_counter = lesson_counter + 1
+
+        if completes_lessons != 0:
+            course_progress = completes_lessons/lesson_counter * 100
+        else:
+            course_progress = 0
+
+        return course_progress
+
     def get_registered_course(self, pk):
         course_instance = Course.objects.filter(id=pk).values()[0]
         course_model_instance = Course.objects.filter(id=pk).first()
@@ -307,7 +327,11 @@ class ListRegisterCourse(APIView):
 
         for course in _registeredCourses:
             _registeredCourse = self.get_registered_course(course['course'])
-            _registeredCourse['progress'] = course['progress']
+
+            course_progress = self.get_course_progress(
+                course['profile'], course['course'])
+
+            _registeredCourse['progress'] = course_progress
 
             print(_registeredCourse)
 
