@@ -638,16 +638,30 @@ class CurrentProgress(APIView):
 
         return Response(data=current_progress_instance, status=status.HTTP_200_OK)
 
-    def post(self, request, course_id, profile_id, format=None):
+
+class completeCourseLesson(APIView):
+
+    def get_progress_instance(course_id, profile_id, lesson_id):
+        course_instance = Course.objects.filter(id=course_id).first()
+
+        profile_instance = Profile.objects.filter(id=profile_id).first()
+
+        lesson_instance = Lesson.objects.filter(id=lesson_id).first()
+
+        progress_instance = Progress.objects.filter(
+            course=course_instance, profile=profile_instance, lesson=lesson_instance).first()
+
+        return progress_instance
+
+    def post(self, request, course_id, profile_id, lesson_id, format=None):
 
         current_progress_instance = self.get_progress_instance(
-            course_id, profile_id)
+            course_id, profile_id, lesson_id)
 
-        current_progress_instance.is_complete = True
+        serializer = ProgressSerializer(current_progress_instance, context={
+            'request': request}, many=False)
 
-        serializer = ProgressSerializer(current_progress_instance, many=False)
-
-        if serializers.is_valid():
+        if serializer.is_valid():
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
         else:
