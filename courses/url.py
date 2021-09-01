@@ -51,6 +51,8 @@ urlpatterns = [
          API_ROUTES.ListProgress.as_view()),
     path('progress/current/<int:course_id>/<int:profile_id>',
          API_ROUTES.CurrentProgress.as_view()),
+    path('progress/complete/<int:course_id>/<int:profile_id>/<int:lesson_id>',
+         API_ROUTES.CompleteCourseLesson.as_view()),
 
     path('image/uploader',
          API_ROUTES.UploadView.as_view()),
