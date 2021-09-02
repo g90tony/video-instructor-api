@@ -22,7 +22,8 @@ urlpatterns = [
     path('categories/', API_ROUTES.ListCategory.as_view()),
 
     path('courses/browse/', API_ROUTES.ListCourses.as_view()),
-    path('courses/browse/search/', API_ROUTES.SearchAllCourses.as_view()),
+    path('courses/browse/search/<search_query>',
+         API_ROUTES.SearchAllCourses.as_view()),
     path('courses/browse/<int:course_id>', API_ROUTES.SingleCourse.as_view()),
     path('courses/browse/similar/<int:category>',
          API_ROUTES.SimilarCourses.as_view()),
@@ -31,7 +32,7 @@ urlpatterns = [
 
     path('courses/registered/enroll/',
          API_ROUTES.EnrollCourse.as_view()),
-    path('courses/registered/search/',
+    path('courses/registered/search/<int:profile_id>/<search_query>',
          API_ROUTES.SearchRegisteredCourses.as_view()),
     path('courses/registered/<int:profile_id>',
          API_ROUTES.ListRegisterCourse.as_view()),

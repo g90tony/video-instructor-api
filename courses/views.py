@@ -434,24 +434,50 @@ class SearchRegisteredCourses(APIView):
 
         return profile_instance
 
-    def post(self, request, profile_id, format=None):
-        print(request)
-        search_query = request.data['search_query']
+    def get(self, request, search_query, profile_id, format=None):
+        from re import search
         search_results = list()
+        registered_courses = list()
+        edited_instance = dict()
 
         print(search_query)
-        profile_instance = self.get_required_instances(profile_id)
-        registered_courses = RegisteredCourses.objects.all(
-            profile=profile_instance)
+
+        registered_courses = RegisteredCourses.objects.filter(
+            profile=profile_id).all()
 
         for course in registered_courses:
-            if search_query in course.name:
-                search_results.append(course)
+            course_instance = Course.objects.filter(id=course.course).first()
 
-        serializer = ListRegisterCourseSerializer(search_results, context={
-            'request': request}, many=True)
+            print(course_instance.category)
+            print(course_instance.name)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+            course_category = course_instance.category
+
+            category_instance = Category.objects.filter(
+                id=course_category.id).first()
+
+            serialized_category = dict()
+
+            serialized_category['id'] = category_instance.id
+            serialized_category['name'] = category_instance.name
+            if search(search_query.lower(), course_instance.name.lower()):
+                print("found")
+                edited_instance['id'] = course_instance.id
+                edited_instance['name'] = course_instance.name
+                edited_instance['description'] = course_instance.description
+                edited_instance['category_id'] = course_instance.category_id
+                edited_instance['created'] = course_instance.created
+                edited_instance['category'] = serialized_category
+                edited_instance['thumbnail'] = course_instance.thumbnail.url
+                edited_instance['progress'] = course.progress
+
+                print(edited_instance)
+
+                search_results.append(edited_instance)
+
+        print(search_results)
+
+        return Response(data=search_results, status=status.HTTP_200_OK)
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////
