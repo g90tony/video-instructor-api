@@ -400,16 +400,15 @@ class SingleRegisteredCourse(APIView):
 class SearchAllCourses(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
+    def get(self, request, search_query, format=None):
         print(request)
-        search_query = request.data['search_query']
         search_results = list()
 
         print(search_query)
         all_courses = Course.objects.all()
 
         for course in all_courses:
-            if search_query in course.name:
+            if search_query.lower() in course.name.lower():
                 search_results.append(course)
 
         serializer = ListCourseSerializer(search_results, context={
